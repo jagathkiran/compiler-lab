@@ -1,23 +1,27 @@
 %{
-#include<stdio.h>
-int l=1,w=1,c=0;
+#include <stdio.h>
+int char_count = 0;
+int word_count = 0;
+int line_count = 0;
 %}
 %%
-[A-Za-z0-9] {c++;}
-[\t]+[ ]+ {w++;}
-[\n] {l++;}
-[.] {
-printf("Number of Lines : %d\n",l);
-printf("Number of Words : %d\n",w);
-printf("Number of Characters : %d\n",c);
-return 0;
-}
+[a-zA-Z0-9]+ { word_count++; char_count += yyleng; }
+[ \t]+ { }
+\n { line_count++; }
+. { char_count++; }
 %%
-int yywrap(){
+int yywrap() {
 return 1;
 }
-int main(){
-printf("Enter the text \n");
+int main() {
+printf("Enter text (Ctrl+D to end input):\n");
 yylex();
+printf("\nTotal characters (excluding spaces/tabs):
+%d\n"
+, char_count);
+printf("Total words: %d\n"
+, word_count);
+printf("Total lines: %d\n"
+, line_count);
 return 0;
 }
