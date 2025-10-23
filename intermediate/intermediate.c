@@ -7,7 +7,6 @@
 #define STACK_SIZE 50
 #define MAX_CODE_LINES 50
 
-// --- Data Structures for Representations ---
 struct Quadruple {
   char *op;
   char *arg1;
@@ -21,14 +20,12 @@ struct Triple {
   char *arg2;
 };
 
-// --- Global Arrays to Store Generated Code ---
 struct Quadruple quads[MAX_CODE_LINES];
 int quad_count = 0;
 
 struct Triple triples[MAX_CODE_LINES];
 int triple_count = 0;
 
-// --- Stack for Operators (char) ---
 struct CharStack {
   char items[STACK_SIZE];
   int top;
@@ -45,7 +42,6 @@ char peekChar(struct CharStack *s) {
   return (s->top > -1) ? s->items[s->top] : '\0';
 }
 
-// --- Stack for Operands (char*) ---
 struct StringStack {
   char *items[STACK_SIZE];
   int top;
@@ -59,8 +55,6 @@ char *popString(struct StringStack *s) {
   return (s->top > -1) ? s->items[(s->top)--] : NULL;
 }
 
-// --- Helper to format an argument for a Triple ---
-// Converts "t0", "t1", etc., to "(0)", "(1)" for triple representation
 char *format_triple_arg(const char *arg) {
   if (arg[0] == 't') {
     char *formatted_arg = malloc(10);
@@ -70,7 +64,6 @@ char *format_triple_arg(const char *arg) {
   return strdup(arg);
 }
 
-// --- Helper Functions ---
 int getPrecedence(char op) {
   if (op == '+' || op == '-')
     return 1;
@@ -86,7 +79,6 @@ char *newTemp() {
   return strdup(tempName);
 }
 
-// --- Core Logic ---
 void generateCode(const char *expression, char *finalResultName) {
   struct CharStack operators = {.top = -1};
   struct StringStack operands = {.top = -1};
@@ -174,7 +166,6 @@ void generateCode(const char *expression, char *finalResultName) {
     free(popString(&operands));
 }
 
-// --- Printing and Reset Functions ---
 void printAndReset() {
   printf("Three-Address Code:\n");
   for (int i = 0; i < quad_count; i++) {
@@ -186,7 +177,7 @@ void printAndReset() {
   printf("Quadruple Representation:\n");
   printf("   | %-8s | %-8s | %-8s | %-8s\n", "Operator", "Arg1", "Arg2",
          "Result");
-  printf("---------------------------------------------------\n");
+  printf("----------------------------------------\n");
   for (int i = 0; i < quad_count; i++) {
     printf("%-2d | %-8s | %-8s | %-8s | %-8s\n", i, quads[i].op, quads[i].arg1,
            quads[i].arg2, quads[i].result);
@@ -223,7 +214,7 @@ int main() {
   while (fgets(line, sizeof(line), file)) {
     line[strcspn(line, "\n")] = 0;
 
-    printf("--- Expression %d: %s ---\n", lineNum++, line);
+    printf(" Expression %d: %s \n", lineNum++, line);
 
     char *equalsPos = strchr(line, '=');
     if (equalsPos) {

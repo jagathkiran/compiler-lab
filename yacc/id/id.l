@@ -3,7 +3,8 @@
 %}
 %%
 [a-zA-Z][a-zA-Z0-9]*    { return IDENTIFIER; }
-[ \t\n]                 { return yytext[0]; }
+[ \t\n]+                { /* Skip whitespace */ }
+.                       { return INVALID; }
 %%
 int yywrap() {
     return 1;

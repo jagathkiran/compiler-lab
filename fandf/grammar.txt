@@ -1,2 +1,7 @@
-S -> if E then S else S
-S -> b
+6
+E->T+E
+E->T
+F->F*T
+T->F
+F->(E)
+F->i
